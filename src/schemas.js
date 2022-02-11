@@ -131,6 +131,7 @@ export const SCHEMAS = {
                                     "type": "integer"
                                 },
                                 "status": {
+                                    "type": "string",
                                     "enum": [STATUS_CASE.OPEN]
                                 },
                                 "notes": {
@@ -216,6 +217,7 @@ export const SCHEMAS = {
                                     "type": "integer"
                                 },
                                 "status": {
+                                    "type": "string",
                                     "enum": [STATUS_CASE.CLOSED]
                                 },
                                 "notes": {
@@ -325,7 +327,6 @@ export const SCHEMAS = {
 
     schemaUserCasesOpen : {
         "type": "array",
-        "default": [],
         "items":{
             "type": "object",
             "required": [
@@ -351,7 +352,7 @@ export const SCHEMAS = {
                 },
                 "status": {
                     "type": "string",
-                    "enum": STATUS_CASE.OPEN
+                    "enum": [STATUS_CASE.OPEN]
                 },
                 "notes": {
                     "type": "array",
@@ -405,7 +406,7 @@ export const SCHEMAS = {
                 },
                 "status": {
                     "type": "string",
-                    "enum": STATUS_CASE.CLOSED
+                    "enum": [STATUS_CASE.CLOSED]
                 },
                 "notes": {
                     "type": "array",

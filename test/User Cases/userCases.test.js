@@ -40,13 +40,13 @@ describe(`Accessing user's cases`, () => {
     }),
 
     it(`Accessing user's OPEN cases`, async() => {
-        //TODO: improvement to get list of open cases, store userId to reuse for next call
         const res = await request
-            .get('/users')
+            .get('/cases/status/OPEN')
             .expect(200)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(res.body)
-        let randomUserId = userIdsRands(res.body)
+        let ids = userIdCaseId(res.body)
+        let randomUserId = ids[0]
 
 
         const resp = await request
@@ -230,6 +230,23 @@ describe(`Accessing user's cases - errors`, () => {
         const resp = await request
             .post(`/users/${randomUserId}/cases`)
             .send(HTMLbodies.bodyNewCaseOnlyNotes)
+            .expect(400)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(resp.body)
+        expect(resp.body).to.be.jsonSchema(SCHEMAS.schemaCaseRequestEmpty)
+    }),
+
+    it(`Adding case with empty object for existing user`, async() => {
+        const res = await request
+            .get('/users')
+            .expect(200)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(res.body)
+        let randomUserId = userIdsRands(res.body)
+
+        const resp = await request
+            .post(`/users/${randomUserId}/cases`)
+            .send({})
             .expect(400)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)
