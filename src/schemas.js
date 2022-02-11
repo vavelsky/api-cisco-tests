@@ -269,5 +269,197 @@ export const SCHEMAS = {
                 "type": "string"
             }
         }
+    },
+
+    schemaCasesUser : {
+        "type": "array",
+        "default": [],
+        "items":{
+            "type": "object",
+            "required": [
+                "id",
+                "title",
+                "description",
+                "severity",
+                "status",
+                "notes"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "severity": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "array",
+                    "items":{
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "details"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "details": {
+                                "type": "string"
+                            }
+                        }
+                    }
+    
+                }
+            }
+        }
+    },
+
+    schemaUserCasesOpen : {
+        "type": "array",
+        "default": [],
+        "items":{
+            "type": "object",
+            "required": [
+                "id",
+                "title",
+                "description",
+                "severity",
+                "status",
+                "notes"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "severity": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": STATUS_CASE.OPEN
+                },
+                "notes": {
+                    "type": "array",
+                    "items":{
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "details"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "details": {
+                                "type": "string"
+                            }
+                        }
+                    }
+    
+                }
+            }
+        }
+        
+    },
+
+    schemaUserCasesClosed : {
+        "type": "array",
+        "default": [],
+        "items":{
+            "type": "object",
+            "required": [
+                "id",
+                "title",
+                "description",
+                "severity",
+                "status",
+                "notes"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "severity": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": STATUS_CASE.CLOSED
+                },
+                "notes": {
+                    "type": "array",
+                    "items":{
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "details"
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "details": {
+                                "type": "string"
+                            }
+                        }
+                    }
+    
+                }
+            }
+        }
+        
+    },
+
+    schemaUserCaseId : {
+        "type": "object",
+        "required": [
+            "id",
+            "title",
+            "description",
+            "severity",
+            "status",
+            "notes"
+        ],
+        "properties": {
+            "id": {
+                "type": "integer"
+            },
+            "title": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "severity": {
+                "type": "integer"
+            },
+            "status": {
+                "type": "string"
+            },
+            "notes": {
+                "type": "array"
+            }
+        }
     }
 }

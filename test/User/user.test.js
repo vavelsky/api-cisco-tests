@@ -7,7 +7,7 @@ import { HTMLbodies } from '../../src/HTMLbodies';
 import { ERROR_CODE_MEASSAGES, STRINGS } from '../../src/strings';
 
 
-function userIdsRands(respBody) {
+export function userIdsRands(respBody) {
     let tableLength = respBody.length;
     let tableIds = [];
     for (let i = 0; i < tableLength; i++) {
@@ -118,7 +118,7 @@ describe('Creating user', () => {
         assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
     })
 
-    it('POST /users without body', async () => {
+    it.skip('POST /users without body', async () => {
         let resp = await request
             .post('/users')
             .expect(400)

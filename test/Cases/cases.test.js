@@ -3,17 +3,12 @@ import { use, assert, expect } from 'chai';
 import { describe } from 'mocha';
 use(require('chai-json-schema'))
 import { SCHEMAS } from '../../src/schemas';
+import { userIdsRands } from '../User/user.test';
 
-function getUserId(respBody) {
-    let randUserId = Math.floor(Math.random()* (res.body.length-1))
-    let userId = res.body[randUserId].user.id
-    return userId
-}
-
-function getCaseId(userId) {
-    let randUserId = getUserId(respBody)
-    let randCaseId = Math.floor(Math.random()* (res.body[0].cases.length-1))
-    let caseId = res.body[randUserId].cases[randCaseId].id
+export function getCaseId(respBody, casesLen) {
+    let randCaseId = Math.floor(Math.random()* casesLen)
+    // console.log(`randCaseId: ${respBody}`)
+    let caseId = respBody[randCaseId].id
     return caseId
 }
 

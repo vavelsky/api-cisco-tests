@@ -34,6 +34,19 @@ export const HTMLbodies = {
         "email" : ''
       },
 
-    bodyEmpty : {}
+    bodyEmpty : {},
+
+    bodyNewCase : {
+      "title" : `${faker.name.jobType()}`,
+      "description" : `${faker.commerce.productDescription()}`,
+      "severity" : faker.datatype.number(),
+      "notes" : [ {
+        "details" : `${faker.lorem.sentence()}`
+      } ]
+    },
+
+    bodyCaseNote : {
+      "details" : `${faker.lorem.sentence()}`
+    }
     
 }
