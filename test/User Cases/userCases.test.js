@@ -70,7 +70,7 @@ describe(`Accessing user's cases`, () => {
             .expect(200)
             .expect('Content-Type', /json/)
         expect(resp.body).to.be.jsonSchema(SCHEMAS.schemaUserCasesClosed)
-    })
+    }),
 
     it(`Accessing user's case by id`, async() => {
         const res = await request
@@ -89,7 +89,7 @@ describe(`Accessing user's cases`, () => {
         expect(resp.body).to.be.jsonSchema(SCHEMAS.schemaUserCaseId)
 
 
-    })
+    }),
 
     it(`Creating new case for a user`, async() => {
         const res = await request
@@ -104,7 +104,7 @@ describe(`Accessing user's cases`, () => {
             .post(`/users/${randomUserId}/cases`)
             .send(HTMLbodies.bodyNewCase)
             .expect(201)
-    })
+    }),
     
     it(`Adding notes to an existing case`, async() => {
         const res = await request

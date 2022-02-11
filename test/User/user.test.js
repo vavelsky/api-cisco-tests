@@ -22,25 +22,25 @@ export function userIdsRands(respBody) {
 }
 
 describe ('Accessing users', () => {
-    it('GET /users', async () => {
+    it(`Accessing users' list`, async () => {
         const res = await request
             .get('/users')
             .expect(200)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(res.body)
         expect(res.body).to.be.jsonSchema(SCHEMAS.schemaUsers)
-    })
+    }),
 
-    it('GET /users/', async () => {
+    it(`Accessing users list with '/' at the end`, async () => {
         const res = await request
             .get('/users')
             .expect(200)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(res.body)
         expect(res.body).to.be.jsonSchema(SCHEMAS.schemaUsers);
-    })
+    }),
 
-    it('GET /users/{id}', async () => {
+    it(`Accessing user's details by id`, async () => {
         const res = await request
             .get('/users')
             .expect(200)
@@ -54,9 +54,9 @@ describe ('Accessing users', () => {
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)
         expect(resp.body).to.be.jsonSchema(SCHEMAS.schemaUser)
-    })
+    }),
 
-    it('GET /users/{id_not_existing}', async () => {
+    it(`Accessing user's details that doesn't exist`, async () => {
         const resp = await request
             .get(`/users/${randomNotExistingUser}`)
             .expect(404)
@@ -64,11 +64,11 @@ describe ('Accessing users', () => {
         assert.isNotEmpty(resp.body)
         assert.equal(resp.body.messages[0], STRINGS.userNotExist, 'Correct error message')
         assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
-    })
+    }),
 })
 
 describe('Creating user', () => {
-    it(`Accessing users' list`, async () => {
+    it(`ACreating new user`, async () => {
         const res = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserOK)
