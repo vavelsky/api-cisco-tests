@@ -64,7 +64,7 @@ describe ('Accessing users', () => {
         assert.isNotEmpty(resp.body)
         assert.equal(resp.body.messages[0], STRINGS.userNotExist, 'Correct error message')
         assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
-    }),
+    })
 })
 
 describe('Creating user', () => {
