@@ -34,6 +34,42 @@ export const HTMLbodies = {
         "email" : ''
       },
 
-    bodyEmpty : {}
+    bodyEmpty : {},
+
+    bodyNewCase : {
+      "title" : `${faker.name.jobType()}`,
+      "description" : `${faker.commerce.productDescription()}`,
+      "severity" : faker.datatype.number(),
+      "notes" : [ {
+        "details" : `${faker.lorem.sentence()}`
+      } ]
+    },
+
+    bodyNewCaseEmptyField : {
+      "title" : '',
+      "description" : '',
+      "severity" : null,
+      "notes" : [ {
+        "details" : ''
+      } ]
+    },
+
+    bodyNewCaseNoSeverity : {
+      "title" : `${faker.name.jobType()}`,
+      "description" : `${faker.commerce.productDescription()}`,
+      "notes" : [ {
+        "details" : ''
+      } ]
+    },
+
+    bodyNewCaseOnlyNotes : {
+      "notes" : [ {
+        "details" : ''
+      } ]
+    },
+
+    bodyCaseNote : {
+      "details" : `${faker.lorem.sentence()}`
+    }
     
 }

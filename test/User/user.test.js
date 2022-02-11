@@ -4,9 +4,13 @@ import { describe } from 'mocha';
 use(require('chai-json-schema'))
 import { SCHEMAS } from '../../src/schemas';
 import { HTMLbodies } from '../../src/HTMLbodies';
+import { ERROR_CODE_MEASSAGES, randomNotExistingUser, STRINGS } from '../../src/strings';
 
+// I N F O :
+// Happy paths mixed with error paths in one set.
+// Two sets, one for accessing user and the errors, second one creating users and errors.
 
-function userIdsRands(respBody) {
+export function userIdsRands(respBody) {
     let tableLength = respBody.length;
     let tableIds = [];
     for (let i = 0; i < tableLength; i++) {
@@ -37,14 +41,14 @@ describe ('Accessing users', () => {
     })
 
     it('GET /users/{id}', async () => {
-        let res = await request
+        const res = await request
             .get('/users')
             .expect(200)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(res.body)
         let randomUserId = userIdsRands(res.body)
 
-        let resp = await request
+        const resp = await request
             .get(`/users/${randomUserId}`)
             .expect(200)
             .expect('Content-Type', /json/)
@@ -53,19 +57,19 @@ describe ('Accessing users', () => {
     })
 
     it('GET /users/{id_not_existing}', async () => {
-        let resp = await request
-            .get('/users/0')
+        const resp = await request
+            .get(`/users/${randomNotExistingUser}`)
             .expect(404)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)
-        assert.equal(resp.body.messages[0], 'User with id 0 does not exist', 'Correct error message')
-        assert.equal(resp.body.status, 'NOT_FOUND', 'Correct status')
+        assert.equal(resp.body.messages[0], STRINGS.userNotExist, 'Correct error message')
+        assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
     })
 })
 
 describe('Creating user', () => {
     it('POST /users', async () => {
-        let res = await request
+        const res = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserOK)
             .expect(201)
@@ -74,58 +78,59 @@ describe('Creating user', () => {
     })
 
     it('POST /users without email', async () => {
-        let resp = await request
+        const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserNoEmail)
             .expect(400)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)
-        assert.equal(resp.body.messages[0], 'email - must not be blank')
-        assert.equal(resp.body.status, 'BAD_REQUEST', 'Correct status')
+        assert.equal(resp.body.messages[0], STRINGS.emailNotBlank)
+        assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
     })
 
     it('POST /users with email already in db', async () => {
-        let resp = await request
+        // TODO: improvement to get the list of email, store it and attempt to reuse it
+        const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserExistingEmail)
             .expect(400)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)
-        assert.equal(resp.body.messages[0], "User with email 'maria.garcia@domain.com' already exists.")
-        assert.equal(resp.body.status, 'BAD_REQUEST', 'Correct status')
+        assert.equal(resp.body.messages[0], STRINGS.userAlreadyExist)
+        assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
     })
 
     it('POST /users without firstName', async () => {
-        let resp = await request
+        const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserNoFirst)
             .expect(400)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)
-        assert.equal(resp.body.messages[0], "firstName - must not be blank")
-        assert.equal(resp.body.status, 'BAD_REQUEST', 'Correct status')
+        assert.equal(resp.body.messages[0], STRINGS.firstNameNotBlank)
+        assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
     })
 
     it('POST /users without lastName', async () => {
-        let resp = await request
+        const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserNoLast)
             .expect(400)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)
-        assert.equal(resp.body.messages[0], "lastName - must not be blank")
-        assert.equal(resp.body.status, 'BAD_REQUEST', 'Correct status')
+        assert.equal(resp.body.messages[0], STRINGS.lastNameNotBlank)
+        assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
     })
 
-    it('POST /users without body', async () => {
-        let resp = await request
+    it.skip('POST /users without body', async () => {
+        const resp = await request
             .post('/users')
             .expect(400)
         assert.isEmpty(resp.body)
     })
 
     it('POST /users with body object empty', async () => {
-        let resp = await request
+        const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyEmpty)
             .expect(400)
@@ -135,7 +140,7 @@ describe('Creating user', () => {
     })
 
     it('POST /users with empty strings', async () => {
-        let resp = await request
+        const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserEmptyStrings)
             .expect(400)
