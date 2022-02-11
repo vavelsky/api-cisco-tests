@@ -1,0 +1,6 @@
+node_modules
+allure-report
+allure-results
+!.prettierrc.js
+.eslintcache
+coverage
