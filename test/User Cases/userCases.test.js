@@ -4,8 +4,11 @@ import { describe } from 'mocha';
 import { HTMLbodies } from '../../src/HTMLbodies';
 use(require('chai-json-schema'))
 import { SCHEMAS } from '../../src/schemas';
-import { getCaseId } from '../Cases/cases.test';
+import { ERROR_CODE_MEASSAGES, randomHugeCaseId, randomNotExistingUser, STRINGS } from '../../src/strings';
 import { userIdsRands } from '../User/user.test';
+
+// I N F O :
+// Different approach to gathering cases. Here hapy paths separately from the error paths.
 
 function userIdCaseId(respBody) {
     let usersLen = respBody.length
@@ -21,7 +24,7 @@ function userIdCaseId(respBody) {
 
 describe(`Accessing user's cases`, () => {
     it(`Accessing user's cases`, async() => {
-        let res = await request
+        const res = await request
             .get('/users')
             .expect(200)
             .expect('Content-Type', /json/)
@@ -37,7 +40,8 @@ describe(`Accessing user's cases`, () => {
     }),
 
     it(`Accessing user's OPEN cases`, async() => {
-        let res = await request
+        //TODO: improvement to get list of open cases, store userId to reuse for next call
+        const res = await request
             .get('/users')
             .expect(200)
             .expect('Content-Type', /json/)
@@ -53,7 +57,7 @@ describe(`Accessing user's cases`, () => {
     }),
 
     it(`Accessing user's CLOSED cases`, async() => {
-        let res = await request
+        const res = await request
             .get('/users')
             .expect(200)
             .expect('Content-Type', /json/)
@@ -69,7 +73,7 @@ describe(`Accessing user's cases`, () => {
     })
 
     it(`Accessing user's case by id`, async() => {
-        let res = await request
+        const res = await request
             .get('/cases/status/OPEN')
             .expect(200)
             .expect('Content-Type', /json/)
@@ -88,7 +92,7 @@ describe(`Accessing user's cases`, () => {
     })
 
     it(`Creating new case for a user`, async() => {
-        let res = await request
+        const res = await request
             .get('/users')
             .expect(200)
             .expect('Content-Type', /json/)
@@ -98,13 +102,13 @@ describe(`Accessing user's cases`, () => {
 
         const resp = await request
             .post(`/users/${randomUserId}/cases`)
-            .expect(201)
             .send(HTMLbodies.bodyNewCase)
+            .expect(201)
     })
     
     
     it(`Adding notes to an existing case`, async() => {
-        let res = await request
+        const res = await request
             .get('/cases/status/OPEN')
             .expect(200)
             .expect('Content-Type', /json/)
@@ -121,5 +125,80 @@ describe(`Accessing user's cases`, () => {
 })
 
 describe(`Accessing user's cases - errors`, () => {
+    it(`Accessing user's case that doesn't exist`, async() => {
+        const res = await request
+            .get('/users')
+            .expect(200)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(res.body)
+        let randomUserId = userIdsRands(res.body)
 
+        const resp = await request
+            .get(`/users/${randomUserId}/cases/${randomHugeCaseId}`)
+            .expect(404)
+            .expect('Content-Type', /json/)
+            assert.isNotEmpty(resp.body)
+            assert.equal(resp.body.messages[0], STRINGS.caseNotExist, 'Correct error message')
+            assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
+    }),
+
+    it(`Creating case for not existing user`, async() => {
+        const resp = await request
+            .post(`/users/${randomNotExistingUser}/cases`)
+            .send(HTMLbodies.bodyNewCase)
+            .expect(404)
+            .expect('Content-Type', /json/)
+            assert.isNotEmpty(resp.body)
+            assert.equal(resp.body.messages[0], STRINGS.userNotExist, 'Correct error message')
+            assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
+    }),
+
+    it(`Adding notes for not existing case of not existing user`, async() => {
+        const resp = await request
+            .post(`/users/${randomNotExistingUser}/cases/${randomHugeCaseId}/notes`)
+            .send(HTMLbodies.bodyCaseNote)
+            .expect(404)
+            .expect('Content-Type', /json/)
+            assert.isNotEmpty(resp.body)
+            assert.equal(resp.body.messages[0], STRINGS.caseNotExist, 'Correct error message')
+            assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
+    }),
+
+    it(`Adding notes for not existing case of existing user`, async() => {
+        const res = await request
+            .get('/cases/status/OPEN')
+            .expect(200)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(res.body)
+        let userId = userIdCaseId(res.body)
+        let randomUserId = userId[0]
+        let caseId = userIdCaseId(res.body)
+        let randomUserCaseId = caseId[1]
+
+        const resp = await request
+            .post(`/users/${randomUserId}/cases/${randomUserCaseId}/notes`)
+            .send(HTMLbodies.bodyCaseNote)
+            .expect(404)
+            .expect('Content-Type', /json/)
+            assert.isNotEmpty(resp.body)
+            assert.equal(resp.body.messages[0], `Case with id ${randomUserCaseId} not found`, 'Correct error message')
+            assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
+    }),
+
+    it(`Adding notes for not existing case of existing user`, async() => {
+        const res = await request
+            .get('/users')
+            .expect(200)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(res.body)
+        let randomUserId = userIdsRands(res.body)
+
+        const resp = await request
+            .post(`/users/${randomUserId}/cases`)
+            .send(HTMLbodies.bodyNewCaseEmptyField)
+            .expect(400)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(resp.body)
+        expect(resp.body).to.be.jsonSchema(SCHEMAS.schemaCaseRequestEmpty)
+    })
 })

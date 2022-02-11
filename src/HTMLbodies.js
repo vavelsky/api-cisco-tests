@@ -45,6 +45,15 @@ export const HTMLbodies = {
       } ]
     },
 
+    bodyNewCaseEmptyField : {
+      "title" : '',
+      "description" : '',
+      "severity" : null,
+      "notes" : [ {
+        "details" : ''
+      } ]
+    },
+
     bodyCaseNote : {
       "details" : `${faker.lorem.sentence()}`
     }

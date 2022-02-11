@@ -461,5 +461,26 @@ export const SCHEMAS = {
                 "type": "array"
             }
         }
+    },
+
+    schemaCaseRequestEmpty : {
+        "type": "object",
+        "required": [
+            "messages",
+            "status"
+        ],
+        "properties": {
+            "messages": {
+                "type": "array",
+                "items":{
+                    "type": "string",
+                    "enum": [STRINGS.titleNotBlank, STRINGS.severityNotBlank, STRINGS.descNotBlank]
+                }
+            },
+            "status": {
+                "type": "string",
+                "enum": [ERROR_CODE_MEASSAGES.BR]
+            }
+        }
     }
 }
