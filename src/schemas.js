@@ -482,5 +482,26 @@ export const SCHEMAS = {
                 "enum": [ERROR_CODE_MEASSAGES.BR]
             }
         }
+    },
+
+    schemaCaseRequestuNoSeverity : {
+        "type": "object",
+        "required": [
+            "messages",
+            "status"
+        ],
+        "properties": {
+            "messages": {
+                "type": "array",
+                "items":{
+                    "type": "string",
+                    "enum": [STRINGS.severityNotBlank]
+                }
+            },
+            "status": {
+                "type": "string",
+                "enum": [ERROR_CODE_MEASSAGES.BR]
+            }
+        }
     }
 }

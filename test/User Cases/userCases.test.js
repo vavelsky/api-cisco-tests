@@ -185,7 +185,7 @@ describe(`Accessing user's cases - errors`, () => {
             assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
     }),
 
-    it(`Adding notes for not existing case of existing user`, async() => {
+    it(`Adding case with empty fields for existing user`, async() => {
         const res = await request
             .get('/users')
             .expect(200)
@@ -196,6 +196,40 @@ describe(`Accessing user's cases - errors`, () => {
         const resp = await request
             .post(`/users/${randomUserId}/cases`)
             .send(HTMLbodies.bodyNewCaseEmptyField)
+            .expect(400)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(resp.body)
+        expect(resp.body).to.be.jsonSchema(SCHEMAS.schemaCaseRequestEmpty)
+    }),
+
+    it(`Adding case without severity for existing user`, async() => {
+        const res = await request
+            .get('/users')
+            .expect(200)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(res.body)
+        let randomUserId = userIdsRands(res.body)
+
+        const resp = await request
+            .post(`/users/${randomUserId}/cases`)
+            .send(HTMLbodies.bodyNewCaseNoSeverity)
+            .expect(400)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(resp.body)
+        expect(resp.body).to.be.jsonSchema(SCHEMAS.schemaCaseRequestuNoSeverity)
+    }),
+
+    it(`Adding case with only notes for existing user`, async() => {
+        const res = await request
+            .get('/users')
+            .expect(200)
+            .expect('Content-Type', /json/)
+        assert.isNotEmpty(res.body)
+        let randomUserId = userIdsRands(res.body)
+
+        const resp = await request
+            .post(`/users/${randomUserId}/cases`)
+            .send(HTMLbodies.bodyNewCaseOnlyNotes)
             .expect(400)
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)

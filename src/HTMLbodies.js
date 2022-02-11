@@ -54,6 +54,20 @@ export const HTMLbodies = {
       } ]
     },
 
+    bodyNewCaseNoSeverity : {
+      "title" : `${faker.name.jobType()}`,
+      "description" : `${faker.commerce.productDescription()}`,
+      "notes" : [ {
+        "details" : ''
+      } ]
+    },
+
+    bodyNewCaseOnlyNotes : {
+      "notes" : [ {
+        "details" : ''
+      } ]
+    },
+
     bodyCaseNote : {
       "details" : `${faker.lorem.sentence()}`
     }
