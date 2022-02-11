@@ -68,16 +68,16 @@ describe ('Accessing users', () => {
 })
 
 describe('Creating user', () => {
-    it('POST /users', async () => {
+    it(`Accessing users' list`, async () => {
         const res = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserOK)
             .expect(201)
             .expect('Content-Length', '0')
         assert.isEmpty(res.body)
-    })
+    }),
 
-    it('POST /users without email', async () => {
+    it('Creating user without email', async () => {
         const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserNoEmail)
@@ -86,9 +86,9 @@ describe('Creating user', () => {
         assert.isNotEmpty(resp.body)
         assert.equal(resp.body.messages[0], STRINGS.emailNotBlank)
         assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
-    })
+    }),
 
-    it('POST /users with email already in db', async () => {
+    it('Creating user with email already in db', async () => {
         // TODO: improvement to get the list of email, store it and attempt to reuse it
         const resp = await request
             .post('/users')
@@ -98,9 +98,9 @@ describe('Creating user', () => {
         assert.isNotEmpty(resp.body)
         assert.equal(resp.body.messages[0], STRINGS.userAlreadyExist)
         assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
-    })
+    }),
 
-    it('POST /users without firstName', async () => {
+    it('PCreating user without firstName', async () => {
         const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserNoFirst)
@@ -109,9 +109,9 @@ describe('Creating user', () => {
         assert.isNotEmpty(resp.body)
         assert.equal(resp.body.messages[0], STRINGS.firstNameNotBlank)
         assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
-    })
+    }),
 
-    it('POST /users without lastName', async () => {
+    it('PCreating user without lastName', async () => {
         const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserNoLast)
@@ -120,16 +120,16 @@ describe('Creating user', () => {
         assert.isNotEmpty(resp.body)
         assert.equal(resp.body.messages[0], STRINGS.lastNameNotBlank)
         assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.BR, 'Correct status')
-    })
+    }),
 
-    it.skip('POST /users without body', async () => {
+    it.skip('Creating user without body object', async () => {
         const resp = await request
             .post('/users')
             .expect(400)
         assert.isEmpty(resp.body)
-    })
+    }),
 
-    it('POST /users with body object empty', async () => {
+    it('Creating user with body object empty', async () => {
         const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyEmpty)
@@ -137,9 +137,9 @@ describe('Creating user', () => {
             .expect('Content-Type', /json/)
         assert.isNotEmpty(resp.body)
         expect(resp.body).to.be.jsonSchema(SCHEMAS.schemaNewUserEmptyBody)
-    })
+    }),
 
-    it('POST /users with empty strings', async () => {
+    it('Creating user with empty strings', async () => {
         const resp = await request
             .post('/users')
             .send(HTMLbodies.bodyNewUserEmptyStrings)

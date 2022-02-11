@@ -106,7 +106,6 @@ describe(`Accessing user's cases`, () => {
             .expect(201)
     })
     
-    
     it(`Adding notes to an existing case`, async() => {
         const res = await request
             .get('/cases/status/OPEN')
@@ -172,16 +171,14 @@ describe(`Accessing user's cases - errors`, () => {
         assert.isNotEmpty(res.body)
         let userId = userIdCaseId(res.body)
         let randomUserId = userId[0]
-        let caseId = userIdCaseId(res.body)
-        let randomUserCaseId = caseId[1]
 
         const resp = await request
-            .post(`/users/${randomUserId}/cases/${randomUserCaseId}/notes`)
+            .post(`/users/${randomUserId}/cases/${randomHugeCaseId}/notes`)
             .send(HTMLbodies.bodyCaseNote)
             .expect(404)
             .expect('Content-Type', /json/)
             assert.isNotEmpty(resp.body)
-            assert.equal(resp.body.messages[0], `Case with id ${randomUserCaseId} not found`, 'Correct error message')
+            assert.equal(resp.body.messages[0], STRINGS.caseNotExist, 'Correct error message')
             assert.equal(resp.body.status, ERROR_CODE_MEASSAGES.NF, 'Correct status')
     }),
 
