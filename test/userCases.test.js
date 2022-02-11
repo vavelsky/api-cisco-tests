@@ -1,11 +1,11 @@
 const request = require('supertest')('http://localhost:8080')
 import { use, assert, expect } from 'chai';
 import { describe } from 'mocha';
-import { HTMLbodies } from '../../src/HTMLbodies';
+import { HTMLbodies } from '../src/HTMLbodies';
 use(require('chai-json-schema'))
-import { SCHEMAS } from '../../src/schemas';
-import { ERROR_CODE_MEASSAGES, randomHugeCaseId, randomNotExistingUser, STRINGS } from '../../src/strings';
-import { userIdsRands } from '../User/user.test';
+import { SCHEMAS } from '../src/schemas';
+import { ERROR_CODE_MEASSAGES, randomHugeCaseId, randomNotExistingUser, STRINGS } from '../src/strings';
+import { userIdsRands } from './user.test';
 
 // I N F O :
 // Different approach to gathering cases. Here hapy paths separately from the error paths.

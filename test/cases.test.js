@@ -2,8 +2,7 @@ const request = require('supertest')('http://localhost:8080')
 import { use, assert, expect } from 'chai';
 import { describe } from 'mocha';
 use(require('chai-json-schema'))
-import { SCHEMAS } from '../../src/schemas';
-import { userIdsRands } from '../User/user.test';
+import { SCHEMAS } from '../src/schemas';
 
 export function getCaseId(respBody, casesLen) {
     let randCaseId = Math.floor(Math.random()* casesLen)

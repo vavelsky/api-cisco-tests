@@ -2,9 +2,9 @@ const request = require('supertest')('http://localhost:8080')
 import { use, assert, expect } from 'chai';
 import { describe } from 'mocha';
 use(require('chai-json-schema'))
-import { SCHEMAS } from '../../src/schemas';
-import { HTMLbodies } from '../../src/HTMLbodies';
-import { ERROR_CODE_MEASSAGES, randomNotExistingUser, STRINGS } from '../../src/strings';
+import { SCHEMAS } from '../src/schemas';
+import { HTMLbodies } from '../src/HTMLbodies';
+import { ERROR_CODE_MEASSAGES, randomNotExistingUser, STRINGS } from '../src/strings';
 
 // I N F O :
 // Happy paths mixed with error paths in one set.
